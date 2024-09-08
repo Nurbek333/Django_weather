@@ -22,17 +22,19 @@ def index(request):
     for city in cities:
 
         r = requests.get(url.format(city)).json()
-
-        city_weather = {
-            'city': city.name,
-            'temperature': r['main']['temp'],
-            'description': r['weather'][0]['description'],
-            'icon': r['weather'][0]['icon'],
-        }
+        try:
+            city_weather = {
+                'city': city.name,
+                'temperature': r['main']['temp'],
+                'description': r['weather'][0]['description'],
+                'icon': r['weather'][0]['icon'],
+            }
+        except:
+            pass
 
         weather_data.append(city_weather)
 
-    context = {'weather_data': weather_data, 'form': form}
+    context = {'weather_data': weather_data[::-1], 'form': form}
 
     return render(request, 'weather/weather.html', context)
 
